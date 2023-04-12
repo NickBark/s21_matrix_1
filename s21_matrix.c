@@ -39,6 +39,46 @@ int s21_eq_matrix(matrix_t* A, matrix_t* B) {
     return ret;
 }
 
+int s21_sum_matrix(matrix_t* A, matrix_t* B, matrix_t* result) {
+    int ret = 0;
+
+    if (A == 0 || B == 0) {
+        ret = 1;
+    } else if ((A->rows == B->rows) && (A->columns == B->columns)) {
+        for (int i = 0; i < A->rows; i++) {
+            for (int j = 0; j < A->columns; j++) {
+                result->matrix[i][j] = A->matrix[i][j] + B->matrix[i][j];
+            }
+        }
+        result->rows = A->rows;
+        result->columns = A->columns;
+    } else {
+        ret = 2;
+    }
+
+    return ret;
+}
+
+int s21_sub_matrix(matrix_t* A, matrix_t* B, matrix_t* result) {
+    int ret = 0;
+
+    if (A == 0 || B == 0) {
+        ret = 1;
+    } else if ((A->rows == B->rows) && (A->columns == B->columns)) {
+        for (int i = 0; i < A->rows; i++) {
+            for (int j = 0; j < A->columns; j++) {
+                result->matrix[i][j] = A->matrix[i][j] - B->matrix[i][j];
+            }
+        }
+        result->rows = A->rows;
+        result->columns = A->columns;
+    } else {
+        ret = 2;
+    }
+
+    return ret;
+}
+
 // ---------------- support func ---------------- //
 void print_matrix(matrix_t* matrix) {
     for (int i = 0; i < matrix->rows; i++) {
