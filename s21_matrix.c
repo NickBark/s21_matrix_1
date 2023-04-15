@@ -79,6 +79,48 @@ int s21_sub_matrix(matrix_t* A, matrix_t* B, matrix_t* result) {
     return ret;
 }
 
+int s21_mult_number(matrix_t* A, double number, matrix_t* result) {
+    int ret = 0;
+    if (A == 0) {
+        ret = 1;
+    } else {
+        s21_remove_matrix(result);
+        s21_create_matrix(A->rows, A->columns, result);
+        for (int i = 0; i < A->rows; i++) {
+            for (int j = 0; j < A->columns; j++) {
+                result->matrix[i][j] = A->matrix[i][j] * number;
+            }
+        }
+        result->rows = A->rows;
+        result->columns = A->columns;
+    }
+
+    return ret;
+}
+
+int s21_mult_matrix(matrix_t* A, matrix_t* B, matrix_t* result) {
+    int ret = 0;
+
+    if (A == 0 || B == 0) {
+        ret = 1;
+    } else if (A->columns == B->rows) {
+        s21_remove_matrix(result);
+        s21_create_matrix(A->rows, B->columns, result);
+        for (int i = 0; i < A->rows; i++) {
+            for (int j = 0; j < B->columns; j++) {
+                for (int k = 0; k < A->columns; k++)
+                    result->matrix[i][j] += A->matrix[i][k] * B->matrix[k][j];
+            }
+        }
+        result->rows = A->rows;
+        result->columns = B->columns;
+    } else {
+        ret = 2;
+    }
+
+    return ret;
+}
+
 // ---------------- support func ---------------- //
 void print_matrix(matrix_t* matrix) {
     for (int i = 0; i < matrix->rows; i++) {
@@ -94,6 +136,14 @@ void fill_matrix(double val, matrix_t* matrix) {
     for (int i = 0; i < matrix->rows; i++) {
         for (int j = 0; j < matrix->columns; j++) {
             matrix->matrix[i][j] = val;
+        }
+    }
+}
+
+void fill_matrix_interactive(matrix_t* matrix) {
+    for (int i = 0; i < matrix->rows; i++) {
+        for (int j = 0; j < matrix->columns; j++) {
+            scanf("%lf", &(matrix->matrix[i][j]));
         }
     }
 }
