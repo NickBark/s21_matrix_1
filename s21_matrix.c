@@ -121,6 +121,24 @@ int s21_mult_matrix(matrix_t* A, matrix_t* B, matrix_t* result) {
     return ret;
 }
 
+int s21_transpose(matrix_t* A, matrix_t* result) {
+    int ret = 0;
+    if (A == 0 || A->columns == 0 || A->rows == 0) {
+        ret = 1;
+    } else {
+        s21_remove_matrix(result);
+        s21_create_matrix(A->columns, A->rows, result);
+        for (int i = 0; i < A->rows; i++) {
+            for (int j = 0; j < A->columns; j++) {
+                result->matrix[j][i] = A->matrix[i][j];
+            }
+            result->rows = A->columns;
+            result->columns = A->rows;
+        }
+    }
+    return ret;
+}
+
 // ---------------- support func ---------------- //
 void print_matrix(matrix_t* matrix) {
     for (int i = 0; i < matrix->rows; i++) {
