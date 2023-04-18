@@ -139,7 +139,66 @@ int s21_transpose(matrix_t* A, matrix_t* result) {
     return ret;
 }
 
+int s21_calc_complements(matrix_t* A, matrix_t* result) {}
+
 // ---------------- support func ---------------- //
+void get_minor(matrix_t* A, matrix_t* result) {
+    s21_remove_matrix(result);
+    s21_create_matrix(A->rows, A->columns, result);
+    matrix_t* minor = malloc(sizeof(matrix_t));
+    s21_create_matrix(A->rows - 1, A->columns - 1, minor);
+    fill_matrix(0, minor);
+    minor->rows = A->rows - 1;
+    minor->columns = A->columns - 1;
+
+    for (int i = 0; i < result->rows; i++) {
+        for (int j = 0; j < result->columns; j++) {
+            minor_matrix(A, minor, i, j);
+            print_matrix(minor);
+            if (minor->rows == 3) {
+                result->matrix[i][j] = triangle_rule(minor);
+            } else if (minor->rows == 2) {
+                result->matrix[i][j] =
+                    minor->matrix[0][0] * minor->matrix[1][1] -
+                    minor->matrix[0][1] * minor->matrix[1][0];
+            } else if (minor->rows == 1) {
+                result->matrix[i][j] = minor->matrix[0][0];
+            } else if (minor->rows > 3) {
+                get_minor(minor, minor);
+            }
+        }
+    }
+
+    s21_remove_matrix(minor);
+    free(minor);
+}
+
+double triangle_rule(matrix_t* matrix) {
+    return matrix->matrix[0][0] * matrix->matrix[1][1] * matrix->matrix[2][2] +
+           matrix->matrix[1][0] * matrix->matrix[2][1] * matrix->matrix[0][2] +
+           matrix->matrix[0][1] * matrix->matrix[1][2] * matrix->matrix[2][0] -
+           matrix->matrix[0][2] * matrix->matrix[1][1] * matrix->matrix[2][0] -
+           matrix->matrix[0][1] * matrix->matrix[1][0] * matrix->matrix[2][2] -
+           matrix->matrix[0][0] * matrix->matrix[2][1] * matrix->matrix[1][2];
+}
+
+void minor_matrix(matrix_t* source, matrix_t* minor, int im, int jm) {
+    int n = source->rows;
+    int k = 0;
+    int l = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (i == im) continue;
+        l = 0;
+        for (int j = 0; j < n; j++) {
+            if (j == jm) continue;
+            minor->matrix[k][l] = source->matrix[i][j];
+            l++;
+        }
+        k++;
+    }
+}
+
 void print_matrix(matrix_t* matrix) {
     for (int i = 0; i < matrix->rows; i++) {
         for (int j = 0; j < matrix->columns; j++) {

@@ -22,11 +22,16 @@ int s21_sub_matrix(matrix_t* A, matrix_t* B, matrix_t* result);
 int s21_mult_number(matrix_t* A, double number, matrix_t* result);
 int s21_mult_matrix(matrix_t* A, matrix_t* B, matrix_t* result);
 int s21_transpose(matrix_t* A, matrix_t* result);
+int s21_calc_complements(matrix_t* A, matrix_t* result);
 
 // support func
 void print_matrix(matrix_t* matrix);
 void fill_matrix(double val, matrix_t* matrix);
 void fill_matrix_interactive(matrix_t* matrix);
 double round_to_seven(double x);
+void get_minor(matrix_t* A, matrix_t* result);
+void minor_matrix(matrix_t* source, matrix_t* minor, int im, int jm);
+
+double triangle_rule(matrix_t* matrix);
 
 #endif  // S21_MATRIX_H
