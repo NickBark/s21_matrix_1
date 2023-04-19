@@ -111,6 +111,7 @@ int main() {
     matrix_t* result = malloc(sizeof(matrix_t));
 
     s21_create_matrix(3, 3, matrix1);
+
     // s21_create_matrix(2, 3, matrix2);
 
     fill_matrix_interactive(matrix1);
@@ -121,8 +122,10 @@ int main() {
 
     print_matrix(matrix1);
     // print_matrix(matrix2);
-
-    get_minor(matrix1, result);
+    // printf("det %lf\n", recursion_determ(matrix1));
+    // s21_calc_complements(matrix1, result);
+    s21_inverse_matrix(matrix1, result);
+    // get_minor(matrix1, result);
     // printf("tr: %d\n", s21_transpose(matrix1, result));
 
     // printf("mul: %d\n", s21_mult_number(matrix1, NAN, result));
