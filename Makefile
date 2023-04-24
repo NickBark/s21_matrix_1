@@ -1,6 +1,6 @@
 CC= gcc
 CFLAGS=-g -Werror -Wextra -std=c11
-SOURSES=main.c s21_matrix.c
+SOURSES=main.c s21_matrix.c test.c
 OBJECTS=$(SOURSES:.c=.o)
 TEST_FLAGS=-lcheck $(shell pkg-config --cflags --libs check)
 LIB=s21_matrix.a
@@ -19,7 +19,7 @@ $(LIB): s21_matrix.o
 debug: $(LIB) main.o
 	$(CC) $(CFLAGS) main.o $(LIB) -lm -o debug
 
-test: $(LIB) test.o
+test: $(LIB)
 	$(CC) $(CFLAGS) -g tests/*.c $(LIB) $(TEST_FLAGS) -o test
 	./test
 
