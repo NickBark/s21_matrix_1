@@ -33,6 +33,7 @@ void fill_matrix_auto(double val, matrix_t* matrix);
 void fill_matrix_interactive(matrix_t* matrix);
 void fill_matrix(matrix_t* A, double start, double step);
 double round_to_seven(double x);
+int check_error(matrix_t* A);
 // void get_minor(matrix_t* A, matrix_t* result);  // вроде не нужна
 void minor_matrix(matrix_t* source, matrix_t* minor, int im, int jm);
 

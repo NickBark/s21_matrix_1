@@ -110,11 +110,11 @@ int main() {
     matrix_t* matrix2 = malloc(sizeof(matrix_t));
     matrix_t* result = malloc(sizeof(matrix_t));
 
-    s21_create_matrix(3, 2, matrix1);
-    s21_create_matrix(2, 3, matrix2);
+    s21_create_matrix(3, 3, matrix1);
+    // s21_create_matrix(2, 3, matrix2);
 
     fill_matrix_interactive(matrix1);
-    fill_matrix_interactive(matrix2);
+    // fill_matrix_interactive(matrix2);
 
     // fill_matrix(0.12345679, matrix1);
     // fill_matrix(0.12345679, matrix2);
@@ -128,14 +128,18 @@ int main() {
     // printf("tr: %d\n", s21_transpose(matrix1, result));
 
     // printf("mul: %d\n", s21_mult_number(matrix1, NAN, result));
-    s21_mult_matrix(matrix1, matrix2, result);
+    // s21_mult_matrix(matrix1, matrix2, result);
+
     // printf("mul: %d\n", s21_mult_matrix(matrix1, matrix2, result));
 
     // print_matrix(result);
+    double res = 0;
+    s21_determinant(matrix1, &res);
+    printf("det: %lf\n", res);
 
     s21_remove_matrix(matrix1);
-    s21_remove_matrix(matrix2);
-    s21_remove_matrix(result);
+    // s21_remove_matrix(matrix2);
+    // s21_remove_matrix(result);
 
     free(matrix1);
     free(matrix2);
