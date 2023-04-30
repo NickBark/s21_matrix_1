@@ -26,6 +26,7 @@ void s21_remove_matrix(matrix_t* A) {
 
 int s21_eq_matrix(matrix_t* A, matrix_t* B) {
     int ret = -1;
+
     if (check_error(A) || check_error(B)) {
         ret = FAILURE;
     } else if ((A->rows == B->rows) && (A->columns == B->columns)) {
@@ -50,7 +51,6 @@ int s21_sum_matrix(matrix_t* A, matrix_t* B, matrix_t* result) {
         A->columns == 0 || A->rows == 0 || B->columns == 0 || B->rows == 0) {
         ret = 1;
     } else if ((A->rows == B->rows) && (A->columns == B->columns)) {
-        // s21_remove_matrix(result);
         s21_create_matrix(A->rows, A->columns, result);
         for (int i = 0; i < A->rows; i++) {
             for (int j = 0; j < A->columns; j++) {
@@ -70,7 +70,6 @@ int s21_sub_matrix(matrix_t* A, matrix_t* B, matrix_t* result) {
     if (check_error(A) || check_error(B)) {
         ret = 1;
     } else if ((A->rows == B->rows) && (A->columns == B->columns)) {
-        // s21_remove_matrix(result);
         s21_create_matrix(A->rows, A->columns, result);
         for (int i = 0; i < A->rows; i++) {
             for (int j = 0; j < A->columns; j++) {
@@ -89,7 +88,6 @@ int s21_mult_number(matrix_t* A, double number, matrix_t* result) {
     if (check_error(A)) {
         ret = 1;
     } else {
-        // s21_remove_matrix(result);
         s21_create_matrix(A->rows, A->columns, result);
         for (int i = 0; i < A->rows; i++) {
             for (int j = 0; j < A->columns; j++) {
@@ -107,7 +105,6 @@ int s21_mult_matrix(matrix_t* A, matrix_t* B, matrix_t* result) {
     if (check_error(A) || check_error(B)) {
         ret = 1;
     } else if (A->columns == B->rows) {
-        // s21_remove_matrix(result);
         s21_create_matrix(A->rows, B->columns, result);
 
         for (int i = 0; i < A->rows; i++) {
@@ -128,7 +125,6 @@ int s21_transpose(matrix_t* A, matrix_t* result) {
     if (A == 0 || A->columns == 0 || A->rows == 0) {
         ret = 1;
     } else {
-        // s21_remove_matrix(result);
         s21_create_matrix(A->columns, A->rows, result);
         for (int i = 0; i < A->rows; i++) {
             for (int j = 0; j < A->columns; j++) {
@@ -197,14 +193,12 @@ int s21_inverse_matrix(matrix_t* A, matrix_t* result) {
         } else {
             matrix_t* calc_comp = malloc(sizeof(matrix_t));
             matrix_t* tran = malloc(sizeof(matrix_t));
-            s21_create_matrix(A->rows, A->columns, calc_comp);
-            s21_create_matrix(A->rows, A->columns, tran);
             s21_calc_complements(A, calc_comp);
+            s21_transpose(calc_comp, tran);
             det = recursion_determ(A);
             if (fabs(det) < S21_EPS) {
                 ret = 2;
             } else {
-                s21_transpose(calc_comp, tran);
                 for (int i = 0; i < A->rows; i++) {
                     for (int j = 0; j < A->columns; j++) {
                         result->matrix[i][j] = tran->matrix[i][j] / det;
@@ -225,9 +219,17 @@ int s21_inverse_matrix(matrix_t* A, matrix_t* result) {
 
 int check_error(matrix_t* A) {
     int ret = 0;
-    if (A == 0 || A->columns == 0 || A->rows == 0 || A->matrix == 0) {
+
+    if (A == 0) {
         ret = 1;
+    } else {
+        if (A->matrix == 0) {
+            ret = 1;
+        } else {
+            if (A->rows == 0 || A->columns == 0) ret = 1;
+        }
     }
+
     return ret;
 }
 
@@ -330,34 +332,3 @@ double round_to_seven(double x) {
     double scale = pow(10, 7);
     return round(x * scale) / scale;
 }
-
-// void get_minor(matrix_t* A, matrix_t* result) {
-//     s21_remove_matrix(result);
-//     s21_create_matrix(A->rows, A->columns, result);
-//     matrix_t* minor = malloc(sizeof(matrix_t));
-//     s21_create_matrix(A->rows - 1, A->columns - 1, minor);
-//     fill_matrix(0, minor);
-//     minor->rows = A->rows - 1;
-//     minor->columns = A->columns - 1;
-
-//     for (int i = 0; i < result->rows; i++) {
-//         for (int j = 0; j < result->columns; j++) {
-//             minor_matrix(A, minor, i, j);
-//             print_matrix(minor);
-//             if (minor->rows == 3) {
-//                 result->matrix[i][j] = low_method(minor);
-//             } else if (minor->rows == 2) {
-//                 result->matrix[i][j] =
-//                     minor->matrix[0][0] * minor->matrix[1][1] -
-//                     minor->matrix[0][1] * minor->matrix[1][0];
-//             } else if (minor->rows == 1) {
-//                 result->matrix[i][j] = minor->matrix[0][0];
-//             } else if (minor->rows > 3) {
-//                 get_minor(minor, minor);
-//             }
-//         }
-//     }
-
-//     s21_remove_matrix(minor);
-//     free(minor);
-// }

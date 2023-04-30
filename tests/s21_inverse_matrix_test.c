@@ -6,11 +6,12 @@ START_TEST(inverse_matrix_1) {
     s21_create_matrix(rows, columns, &A);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            A.matrix[i][j] = i + j * 4.5;
+            A.matrix[i][j] = pow((i + j / 4.5), i + j);
         }
     }
-    ck_assert_int_eq(s21_inverse_matrix(&A, &result), 2);
+    ck_assert_int_eq(s21_inverse_matrix(&A, &result), 0);
     s21_remove_matrix(&A);
+    s21_remove_matrix(&result);
 }
 END_TEST
 
@@ -25,6 +26,7 @@ START_TEST(inverse_matrix_2) {
     }
     ck_assert_int_eq(s21_inverse_matrix(&A, &result), 2);
     s21_remove_matrix(&A);
+    s21_remove_matrix(&result);
 }
 END_TEST
 
